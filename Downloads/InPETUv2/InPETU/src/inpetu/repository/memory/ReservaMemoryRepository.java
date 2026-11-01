@@ -3,40 +3,25 @@ package inpetu.repository.memory;
 import inpetu.model.Reserva;
 import inpetu.repository.IReservaRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class ReservaMemoryRepository implements IReservaRepository {
-    private List<Reserva> listaReservas = new ArrayList<>();
+public class ReservaMemoryRepository extends MemoryRepository<Reserva, Long> implements IReservaRepository {
 
-    @Override
-    public void salvar(Reserva reserva) {
-        listaReservas.add(reserva);
+    public ReservaMemoryRepository() {
+        super(Reserva::getId);
     }
 
     @Override
-    public List<Reserva> listarTodas() {
-        return listaReservas;
+    public List<Reserva> buscarPorRecurso(Long idRecurso) {
+        return armazenamento.values().stream()
+                .filter(r -> r.getRecurso() != null && r.getRecurso().getId().equals(idRecurso))
+                .toList();
     }
 
     @Override
-    public Reserva buscarPorId(Long id) {
-        for (Reserva r : listaReservas) {
-            if (r.getId().equals(id)) {
-                return r;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public void atualizar(Reserva reserva) {
-        // Como está em memória com lista, pode atualizar substituindo ou editando os campos
-        for (int i = 0; i < listaReservas.size(); i++) {
-            if (listaReservas.get(i).getId().equals(reserva.getId())) {
-                listaReservas.set(i, reserva);
-                return;
-            }
-        }
+    public List<Reserva> buscarPorContato(int idContato) {
+        return armazenamento.values().stream()
+                .filter(r -> r.getContato() != null && r.getContato().getId() == idContato)
+                .toList();
     }
 }

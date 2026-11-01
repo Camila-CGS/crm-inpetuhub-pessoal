@@ -1,11 +1,10 @@
 package inpetu.repository;
 
 import inpetu.model.Reserva;
+
 import java.util.List;
 
-public interface IReservaRepository {
-    void salvar(Reserva reserva);
-    List<Reserva> listarTodas();
-    Reserva buscarPorId(Long id);
-    void atualizar(Reserva reserva); // Imuda o status de "Solicitada" para "Aprovada"
+public interface IReservaRepository extends IRepository<Reserva, Long> {
+    List<Reserva> buscarPorRecurso(Long idRecurso);
+    List<Reserva> buscarPorContato(int idContato);
 }
